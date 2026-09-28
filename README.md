@@ -1,4 +1,44 @@
 ---
+### Introduction:
+
+The public https://github.com/EnterpriseDB/warehouse-pg-docker repo provides multiple Docker configurations for setting up WarehousePG in both single-node and multi-node configurations.
+
+This article leverages the repo, but gives explicit instructions for deploying a WarehousePG 7x singlenode cluster running on Rocky Linux 9.
+
+Once connected to the container, the end result will be as shown below:
+
+```
+[gpadmin@whpgdb-primary ~]$ cat /etc/redhat-release
+Rocky Linux release 9.8 (Blue Onyx)
+[gpadmin@whpgdb-primary ~]$
+[gpadmin@whpgdb-primary ~]$ psql whpgtest -c "SELECT * from gp_segment_configuration;"
+ dbid | content | role | preferred_role | mode | status | port |    hostname    |    address     |                datadir
+------+---------+------+----------------+------+--------+------+----------------+----------------+---------------------------------------
+    1 |      -1 | p    | p              | n    | u      | 5432 | whpgdb-primary | whpgdb-primary | /whpgdata/coordinator/whpgsne-1
+    2 |       0 | p    | p              | n    | u      | 6000 | whpgdb-primary | whpgdb-primary | /whpgdata/segments/whpgdata1/whpgsne0
+    3 |       1 | p    | p              | n    | u      | 6001 | whpgdb-primary | whpgdb-primary | /whpgdata/segments/whpgdata2/whpgsne1
+(3 rows)
+
+[gpadmin@whpgdb-primary ~]$
+```
+
+
+---
+### Prerequisites:
+
++ The following Docker packages will be required:
+
+```
+docker-ce 
+docker-ce-cli 
+containerd.io 
+docker-buildx-plugin 
+docker-compose-plugin
+```
+
++ You will also need an [EDB Repos 2.0 token](https://www.enterprisedb.com/docs/repos/getting_started/get_your_token/) to gain access to the EDB `gpsupp` repo, so that WarehousePG packages can be downloaded by Docker.
+
+---
 ### Prerequisites:
 
 + The following Docker packages will be required:
