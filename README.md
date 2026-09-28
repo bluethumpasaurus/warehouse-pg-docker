@@ -3,9 +3,9 @@
 
 The repo provides multiple Docker configurations for setting up WarehousePG in both single-node and multi-node configurations.
 
-This instructions below leverage the repo, giving explicit instructions for deploying a WarehousePG 7x singlenode cluster running on Rocky Linux 9.
+This instructions below leverage the repo, giving explicit guidance on deploying a WarehousePG 7x singlenode cluster running on Rocky Linux 9.
 
-Once connected to the container, the end result will be as shown below:
+Once connected to the container, the end result will be as shown below.
 
 ```
 [gpadmin@whpgdb-primary ~]$ cat /etc/redhat-release
@@ -22,7 +22,6 @@ Rocky Linux release 9.8 (Blue Onyx)
 [gpadmin@whpgdb-primary ~]$
 ```
 
-
 ---
 ### Prerequisites:
 
@@ -37,22 +36,6 @@ docker-compose-plugin
 ```
 
 + You will also need an [EDB Repos 2.0 token](https://www.enterprisedb.com/docs/repos/getting_started/get_your_token/) to gain access to the EDB `gpsupp` repo, so that WarehousePG packages can be downloaded by Docker.
-
----
-### Prerequisites:
-
-+ The following Docker packages will be required:
-
-```
-docker-ce 
-docker-ce-cli 
-containerd.io 
-docker-buildx-plugin 
-docker-compose-plugin
-```
-
-+ You will also need an [EDB Repos 2.0 token](https://www.enterprisedb.com/docs/repos/getting_started/get_your_token/) to gain access to the EDB gpsupp repo, so that WarehousePG packages can be downloaded by Docker.
-
 
 ---
 ### Installing:
@@ -175,9 +158,8 @@ echo "source /usr/local/greenplum-db/greenplum_path.sh" >> ~/.bashrc
 source ~/.bashrc    
 ```
 
-
 ---
-# WarehousePG Docker Setup
+# WarehousePG Docker Setup - MAIN
 
 This repository provides Docker configurations for setting up WarehousePG in both single-node and multi-node configurations.
 
