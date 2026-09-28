@@ -1,3 +1,142 @@
+---
+### Prerequisites:
+
++ The following Docker packages will be required:
+
+```
+docker-ce 
+docker-ce-cli 
+containerd.io 
+docker-buildx-plugin 
+docker-compose-plugin
+```
+
++ You will also need an [EDB Repos 2.0 token](https://www.enterprisedb.com/docs/repos/getting_started/get_your_token/) to gain access to the EDB gpsupp repo, so that WarehousePG packages can be downloaded by Docker.
+
+
+---
+### Installing:
+
++ Clone the repo:
+
+```
+git clone https://github.com/EnterpriseDB/warehouse-pg-docker
+```
+
++ `cd` to the downloaded repo's `WarehousePG7-from-RPMs-RH9-single-node` subdirectory:
+
+```
+cd warehouse-pg-docker/WarehousePG7-from-RPMs-RH9-single-node
+```
+
++ Within the `warehouse-pg-docker/WarehousePG7-from-RPMs-RH9-single-node` directory, create a `data/` directory.
++ The presence of the `data/` directory will ensure the persistence of the container that you will next create.
+
+```
+mkdir -p data
+```
+
+**Note that** if you are installing with macOS + Docker Desktop, you will need to perform a one-time bind-mount workaround when creating the `data/` directory:
+
+```
+mkdir -p data
+docker run --rm --platform=linux/amd64 -v "$(pwd)/data":/x alpine true
+```
+
++ Setup your variables:
+
+```
+export EDBTOKEN=<your-EDB-Repos-2.0-token>
+export EDBREPOSITORY=gpsupp
+export DOCKER_BUILDKIT=1
+```
+
++ Next, build the image specified in the `warehouse-pg-docker/WarehousePG7-from-RPMs-RH9-single-node` directory's `docker-compose.yml` file:
+  + Most systems will require that you run the command with `sudo` - note that we specify `-E` in the command - this tells `sudo` to pass the variables that we previously set.
+
+
+```
+sudo -E docker compose build
+```
+
++ Create, start, and run the container defined in the directory's `docker-compose.yml` file:
+
+```
+docker compose up -d
+```
+
+
+---
+### Connecting to the Container:
+
+
++ Connect to the container:
+
+```
+docker compose exec sne bash
+```
+
++ Once connected, run the commands below to persistently add the path to the WarehousePG binaries to the `gpadmin` user's shell startup:
+
+```
+echo "source /usr/local/greenplum-db/greenplum_path.sh" >> ~/.bashrc
+source ~/.bashrc
+```
+
+
++ Connect to WarehousePG with `psql` from within the container:
+
+```
+psql whpgtest
+```
+
+
+---
+### Container control:
+
++ Check container health:
+
+```
+docker compose ps 
+```
+
++ Watch startup / `gpinitsystem` output:
+
+```
+docker compose logs -f sne
+```
+
++ Pause - the container is removed from "running", but the data/container config is kept:
+
+```
+docker compose stop
+```
+
++ Resume - the same container is used, `gpstart` kicks in, and the data in the `data/` directory is left intact:
+
+```
+docker compose start
+```
+
++ Stop and remove the container - the `data/` folder on disk is untouched:
+
+```
+docker compose down
+```
+
++ Recreate the container - the process finds the existing `data/` directory , runs `gpstart`, and the cluster is returned to its former state:
+
+```      
+docker compose up -d
+
+--- Re-run the below commands when reconnected to the container:
+
+echo "source /usr/local/greenplum-db/greenplum_path.sh" >> ~/.bashrc
+source ~/.bashrc    
+```
+
+
+---
 # WarehousePG Docker Setup
 
 This repository provides Docker configurations for setting up WarehousePG in both single-node and multi-node configurations.
