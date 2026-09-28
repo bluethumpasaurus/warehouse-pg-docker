@@ -1,9 +1,9 @@
 ---
 ### Introduction:
 
-The public https://github.com/EnterpriseDB/warehouse-pg-docker repo provides multiple Docker configurations for setting up WarehousePG in both single-node and multi-node configurations.
+The repo provides multiple Docker configurations for setting up WarehousePG in both single-node and multi-node configurations.
 
-This article leverages the repo, but gives explicit instructions for deploying a WarehousePG 7x singlenode cluster running on Rocky Linux 9.
+This instructions below leverage the repo, giving explicit instructions for deploying a WarehousePG 7x singlenode cluster running on Rocky Linux 9.
 
 Once connected to the container, the end result will be as shown below:
 
